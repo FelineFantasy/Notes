@@ -3,43 +3,42 @@
 [![Python Version](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-Консольный менеджер заметок на Python. Добавляй, обновляй, удаляй и просматривай заметки.
+A console-based note manager in Python. Add, update, delete, and view your notes.
 
-## 📝 Описание
+## 📝 Description
 
-**Notes** — минималистичный консольный менеджер заметок. Всё хранится локально в `notes.txt`, нумерация формируется "на лету" и не ломается при удалении.
+**Notes** is a minimalist console note manager. Everything is stored locally in `notes.txt`, with numbering generated "on the fly" that remains consistent even after deletions.
 
-### Возможности:
-- **Добавление** заметок
--  **Обновление** существующих заметок
--  **Удаление** заметок по номеру
-- **Просмотр** всех заметок с нумерацией
+### Features:
+- **Add** notes
+- **Update** existing notes
+- **Delete** notes by number
+- **View** all notes with numbering
 
-## ⚙️ Установка и запуск
+## ⚙️ Installation and Usage
 
-1. Скачай `notes.py`
-2. Запусти: `python notes.py`
-3. Выбирай действия из меню
+1. Download `notes.py`
+2. Run: `python notes.py`
+3. Choose actions from the menu
 
-## 🎮 Управление
+## 🎮 Controls
 
-Главное меню (пункты 0-4):
-- Добавить заметку
-- Обновить заметку
-- Удалить заметку
-- Посмотреть заметки
+Main menu (options 0-4):
+- Add a note
+- Update a note
+- Delete a note
+- View notes
 
-## 📁 Файлы проекта
+## 📁 Project Files
 
 ```text
 Notes/
-├── notes.py      # Основной файл
-├── notes.txt     # Файл с заметками (создаётся автоматически)
-└── README.md     # Документация
+├── notes.py      # Main file
+├── notes.txt     # Notes file (created automatically)
+└── README.md     # Documentation
 ```
 
-## 👤 Автор
+## 👤 Author
+Timur (FelineFantasy)
 
-**Тимур (FelineFantasy)**
-
-Лицензия: MIT
+**License:** MIT
