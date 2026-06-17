@@ -39,6 +39,5 @@ Notes/
 ```
 
 ## 👤 Author
-Timur (FelineFantasy)
-
-**License:** MIT
+- **FelineFantasy**
+- **License**: MIT
