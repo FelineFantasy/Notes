@@ -35,6 +35,7 @@ Main menu (options 0-4):
 Notes/
 ├── notes.py      # Main file
 ├── notes.txt     # Notes file (created automatically)
+├── .gitignore    # Git ignore rules
 └── README.md     # Documentation
 ```
 
