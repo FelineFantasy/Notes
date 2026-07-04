@@ -15,11 +15,13 @@ A console-based note manager in Python. Add, update, delete, and view your notes
 - **Delete** notes by number
 - **View** all notes with numbering
 
-## ⚙️ Installation and Usage
+## ⚙️ Installation
 
-1. Download `notes.py`
-2. Run: `python notes.py`
-3. Choose actions from the menu
+```bash
+git clone https://github.com/FelineFantasy/Notes.git
+cd Notes
+python notes.py
+```
 
 ## 🎮 Controls
 
