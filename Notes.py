@@ -8,7 +8,7 @@ def clear_console():
     os.system("cls" if os.name == "nt" else "clear")
 
 
-def wait_and_clear():
+def wait_for_enter():
     """Ожидает нажатия Enter и очищает консоль."""
     input("\nДля выхода в меню нажмите Enter...")
     clear_console()
@@ -158,7 +158,7 @@ def main():
         else:
             print("Неверный выбор")
 
-        wait_and_clear()
+        wait_for_enter()
 
 
 if __name__ == '__main__':
