@@ -32,6 +32,8 @@ def load_notes():
 
 def save_notes(lines):
     """Сохраняет заметки в файл."""
+    if lines is None:
+        lines = []
     with open(NOTES_FILE, "w", encoding="utf-8") as f:
         f.writelines(lines)
 
