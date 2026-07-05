@@ -41,10 +41,8 @@ def save_notes(lines):
         f.writelines(lines)
 
 
-def show_notes():
-    """Показывает все заметки с нумерацией."""
-    lines = load_notes()
-
+def display_notes(lines):
+    """Отображает список заметок с нумерацией."""
     if not lines:
         print("=" * 50)
         print("Заметки не найдены!")
@@ -53,6 +51,12 @@ def show_notes():
     print("=" * 50)
     for i, note in enumerate(lines, 1):
         print(f"{i}. {note.strip()}")
+
+
+def show_notes():
+    """Показывает все заметки с нумерацией."""
+    lines = load_notes()
+    display_notes(lines)
 
 
 def get_user_choice(max_choice):
@@ -88,7 +92,7 @@ def action_update_note():
         print("Нет заметок для обновления!")
         return
 
-    show_notes()
+    display_notes(lines)
     choice = get_user_choice(len(lines))
 
     if not choice:
@@ -111,7 +115,7 @@ def action_delete_note():
         print("Нет заметок для удаления!")
         return
 
-    show_notes()
+    display_notes(lines)
     choice = get_user_choice(len(lines))
 
     if not choice:
