@@ -28,6 +28,9 @@ def load_notes():
             return f.readlines()
     except FileNotFoundError:
         return []
+    except Exception as e:
+        print(f"Ошибка чтения: {e}")
+        return []
 
 
 def save_notes(lines):
