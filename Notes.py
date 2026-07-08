@@ -133,35 +133,35 @@ def main():
     """Главный цикл программы."""
     clear_console()
     init_notes_file()
-
-    menu_actions = {
-        "1": action_add_note,
-        "2": action_update_note,
-        "3": action_delete_note,
-        "4": show_notes,
+    
+    menu = {
+        "1": ("Добавить заметку", action_add_note),
+        "2": ("Обновить заметку", action_update_note),
+        "3": ("Удалить заметку", action_delete_note),
+        "4": ("Посмотреть заметки", show_notes),
     }
-
+    
     while True:
-        print("Менеджер заметок")
         print("=" * 50)
+        print("МЕНЕДЖЕР ЗАМЕТОК".center(50))
+        print("=" * 50)
+        for key, (name, _) in menu.items():
+            print(f"{key}. {name}")
         print("0. Выйти")
-        print("1. Добавить заметку")
-        print("2. Обновить заметку")
-        print("3. Удалить заметку")
-        print("4. Посмотреть заметки")
         print("=" * 50)
-
-        choice = input("Выберите вариант: ")
-
+        
+        choice = input("Выберите вариант: ").strip()
+        
         if choice == "0":
+            print("До свидания!")
             break
-
-        action = menu_actions.get(choice)
-        if action:
+        
+        if choice in menu:
+            _, action = menu[choice]
             action()
         else:
-            print("Неверный выбор")
-
+            print("Неверный выбор!")
+        
         wait_for_enter()
 
 
