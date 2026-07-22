@@ -73,13 +73,16 @@ def get_user_choice(max_choice):
 
 
 def action_add_note():
-    """Добавляет новую заметку."""
     print("=" * 50)
-    note = input("Введите заметку, которую хотите добавить: ")
-
+    note = input("Введите заметку, которую хотите добавить: ").strip()
+    
+    if not note:
+        print("Заметка не может быть пустой!")
+        return
+    
     with open(NOTES_FILE, "a", encoding="utf-8") as f:
         f.write(note + "\n")
-
+    
     print("=" * 50)
     print("Заметка добавлена!")
 
