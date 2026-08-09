@@ -35,10 +35,12 @@ Main menu (options 0-4):
 
 ```text
 Notes/
-├── notes.py      # Main file
-├── notes.txt     # Notes file (created automatically)
-├── .gitignore    # Git ignore rules
-└── README.md     # Documentation
+├── notes.py              # Main file
+├── notes.txt             # Notes file (created automatically)
+├── .gitignore            # Git ignore rules
+├── README.md             # Documentation
+└── .github/
+    └── FUNDING.yml       # GitHub funding configuration
 ```
 
 ## 👤 Author
