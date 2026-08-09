@@ -135,6 +135,33 @@ def action_delete_note():
     print(f"Заметка '{deleted_note}' удалена!")
 
 
+def action_search_notes():
+    """Поиск заметок по ключевому слову."""
+    print("=" * 50)
+    keyword = input("Введите ключевое слово для поиска: ").strip().lower()
+    
+    if not keyword:
+        print("Ключевое слово не может быть пустым!")
+        return
+    
+    lines = load_notes()
+    
+    if not lines:
+        print("Нет заметок для поиска!")
+        return
+    
+    found = []
+    for note in lines:
+        if keyword in note.lower():
+            found.append(note)
+    
+    if found:
+        print(f"\nНайдено {len(found)} заметок:")
+        display_notes(found, show_header=False)
+    else:
+        print("Заметки не найдены!")
+
+
 def main():
     """Главный цикл программы."""
     clear_console()
@@ -145,6 +172,7 @@ def main():
         "2": ("Обновить заметку", action_update_note),
         "3": ("Удалить заметку", action_delete_note),
         "4": ("Посмотреть заметки", show_notes),
+        "5": ("Поиск заметок", action_search_notes),
     }
     
     while True:
