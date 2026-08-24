@@ -24,10 +24,11 @@ def init_notes_file():
 
 
 def load_notes():
-    """Загружает все заметки из файла."""
+    """Загружает все заметки из файла, игнорируя пустые строки."""
     try:
         with open(NOTES_FILE, "r", encoding="utf-8") as f:
-            return f.readlines()
+            lines = [line for line in f.readlines() if line.strip()]
+            return lines
     except FileNotFoundError:
         return []
     except Exception as e:
