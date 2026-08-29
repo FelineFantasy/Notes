@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+"""
+Simple note manager with CRUD operations and search functionality.
+"""
+
 import os
 
 NOTES_FILE = "notes.txt"
