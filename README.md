@@ -20,22 +20,23 @@ A console-based note manager in Python. Add, update, delete, and view your notes
 ```bash
 git clone https://github.com/FelineFantasy/Notes
 cd Notes
-python notes.py
+python main.py
 ```
 
-## 🎮 Controls
+🎮 Controls
 
 Main menu (options 0-4):
-- Add a note
-- Update a note
-- Delete a note
-- View notes
 
-## 📁 Project Files
+· Add a note
+· Update a note
+· Delete a note
+· View notes
+
+📁 Project Files
 
 ```text
 Notes/
-├── notes.py              # Main file
+├── main.py               # Main file
 ├── notes.txt             # Notes file (created automatically)
 ├── .gitignore            # Git ignore rules
 ├── README.md             # Documentation
@@ -43,19 +44,21 @@ Notes/
     └── FUNDING.yml       # GitHub funding configuration
 ```
 
-## 💖 Support the Project
+💖 Support the Project
 
-If you enjoy **Notes** and want to help keep the project alive, you can support me here:
+If you enjoy Notes and want to help keep the project alive, you can support me here:
 
-[![DonationAlerts](https://img.shields.io/badge/DonationAlerts-Support-blue.svg)](https://www.donationalerts.com/r/felinefantasy)
+https://img.shields.io/badge/DonationAlerts-Support-blue.svg
 
 Your support helps me:
-- 📝 Keep improving the app
-- 🐱 Develop more open-source projects
-- ☕ Stay awake while coding at 4 AM
+
+· 📝 Keep improving the app
+· 🐱 Develop more open-source projects
+· ☕ Stay awake while coding at 4 AM
 
 Every little bit is appreciated! ❤️
 
-## 👤 Author
-- **FelineFantasy**
-- **License**: MIT
+👤 Author
+
+· FelineFantasy
+· License: MIT
