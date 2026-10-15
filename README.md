@@ -23,7 +23,7 @@ cd Notes
 python main.py
 ```
 
-🎮 Controls
+## 🎮 Controls
 
 Main menu (options 0-4):
 
@@ -32,7 +32,7 @@ Main menu (options 0-4):
 · Delete a note
 · View notes
 
-📁 Project Files
+## 📁 Project Files
 
 ```text
 Notes/
@@ -44,7 +44,7 @@ Notes/
     └── FUNDING.yml       # GitHub funding configuration
 ```
 
-💖 Support the Project
+## 💖 Support the Project
 
 If you enjoy Notes and want to help keep the project alive, you can support me here:
 
@@ -58,7 +58,7 @@ Your support helps me:
 
 Every little bit is appreciated! ❤️
 
-👤 Author
+## 👤 Author
 
 · FelineFantasy
 · License: MIT
