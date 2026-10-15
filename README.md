@@ -59,6 +59,5 @@ Your support helps me:
 Every little bit is appreciated! ❤️
 
 ## 👤 Author
-
-· FelineFantasy
-· License: MIT
+- **FelineFantasy**
+- **License**: MIT
