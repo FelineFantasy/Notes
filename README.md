@@ -48,7 +48,7 @@ Notes/
 
 If you enjoy Notes and want to help keep the project alive, you can support me here:
 
-https://img.shields.io/badge/DonationAlerts-Support-blue.svg
+[![DonationAlerts](https://img.shields.io/badge/DonationAlerts-Support-blue.svg)](https://www.donationalerts.com/r/felinefantasy)
 
 Your support helps me:
 
