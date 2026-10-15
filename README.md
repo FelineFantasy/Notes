@@ -27,10 +27,10 @@ python main.py
 
 Main menu (options 0-4):
 
-· Add a note
-· Update a note
-· Delete a note
-· View notes
+- Add a note
+- Update a note
+- Delete a note
+- View notes
 
 ## 📁 Project Files
 
@@ -52,9 +52,9 @@ https://img.shields.io/badge/DonationAlerts-Support-blue.svg
 
 Your support helps me:
 
-· 📝 Keep improving the app
-· 🐱 Develop more open-source projects
-· ☕ Stay awake while coding at 4 AM
+- 📝 Keep improving the app
+- 🐱 Develop more open-source projects
+- ☕ Stay awake while coding at 4 AM
 
 Every little bit is appreciated! ❤️
 
