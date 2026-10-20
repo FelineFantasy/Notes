@@ -21,6 +21,14 @@ A console-based note manager in Python. Add, update, delete, and view your notes
 git clone https://github.com/FelineFantasy/Notes
 cd Notes
 python main.py
+
+### Example
+
+```text
+1. Add a note
+2. Update a note
+3. Delete a note
+4. View notes
 ```
 
 ## 🎮 Controls
