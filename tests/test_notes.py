@@ -1,3 +1,4 @@
+import io
 import json
 import sys
 import tempfile
@@ -102,6 +103,59 @@ class NotesOperationsTest(unittest.TestCase):
         self.assertEqual(
             json.loads(export_path.read_text(encoding="utf-8")), []
         )
+
+    def run_cli(self, *args):
+        with mock.patch("sys.stdout", new_callable=io.StringIO) as stdout:
+            code = main.run_cli(main.build_parser().parse_args(args))
+        return code, stdout.getvalue()
+
+    def test_cli_add_and_list(self):
+        code, output = self.run_cli("--add", "from cli")
+
+        self.assertEqual(code, 0)
+        self.assertIn("Заметка добавлена!", output)
+        self.assertEqual(self.read_notes(), ["from cli"])
+
+        code, output = self.run_cli("--list")
+        self.assertEqual(code, 0)
+        self.assertIn("1. from cli", output)
+
+    def test_cli_search_shows_only_matches(self):
+        self.write_notes("buy milk", "walk the dog")
+
+        code, output = self.run_cli("--search", "MILK")
+
+        self.assertEqual(code, 0)
+        self.assertIn("1. buy milk", output)
+        self.assertNotIn("walk the dog", output)
+
+    def test_cli_delete_removes_note(self):
+        self.write_notes("first", "second")
+
+        code, output = self.run_cli("--delete", "1")
+
+        self.assertEqual(code, 0)
+        self.assertIn("first", output)
+        self.assertEqual(self.read_notes(), ["second"])
+
+    def test_cli_export_writes_file(self):
+        self.write_notes("first")
+        export_path = Path(self.tmp_dir.name) / "notes.json"
+
+        code, output = self.run_cli("--export", str(export_path))
+
+        self.assertEqual(code, 0)
+        self.assertIn("1", output)
+        self.assertTrue(export_path.exists())
+
+    def test_cli_returns_error_for_invalid_number(self):
+        with mock.patch("sys.stderr", new_callable=io.StringIO) as stderr:
+            code = main.run_cli(
+                main.build_parser().parse_args(["--delete", "5"])
+            )
+
+        self.assertEqual(code, 1)
+        self.assertIn("Ошибка", stderr.getvalue())
 
 
 if __name__ == "__main__":

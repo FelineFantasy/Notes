@@ -4,8 +4,10 @@
 Simple note manager with CRUD operations and search functionality.
 """
 
+import argparse
 import json
 import os
+import sys
 
 NOTES_FILE = os.environ.get("NOTES_FILE", "notes.txt")
 
@@ -137,6 +139,49 @@ def export_notes(path):
     return len(notes)
 
 
+def build_parser():
+    """Создаёт парсер аргументов командной строки."""
+    parser = argparse.ArgumentParser(
+        prog="notes",
+        description="Менеджер заметок: CRUD, поиск и экспорт в JSON.",
+    )
+    parser.add_argument("--add", metavar="ТЕКСТ", help="добавить заметку")
+    parser.add_argument("--list", action="store_true", help="показать все заметки")
+    parser.add_argument("--search", metavar="СЛОВО", help="найти заметки по подстроке")
+    parser.add_argument(
+        "--delete", metavar="НОМЕР", type=int, help="удалить заметку по номеру"
+    )
+    parser.add_argument("--export", metavar="ФАЙЛ", help="экспортировать заметки в JSON")
+    return parser
+
+
+def run_cli(args):
+    """Выполняет действие из аргументов и возвращает код возврата."""
+    try:
+        if args.add is not None:
+            add_note(args.add)
+            print("Заметка добавлена!")
+        elif args.delete is not None:
+            print(f"Заметка '{delete_note(args.delete)}' удалена!")
+        elif args.search is not None:
+            found = search_notes(args.search)
+            if found:
+                print(f"\nНайдено {len(found)} заметок:")
+                display_notes(found, show_header=False)
+            else:
+                print("Заметки не найдены!")
+        elif args.export is not None:
+            count = export_notes(args.export)
+            print(f"Экспортировано заметок: {count} -> {args.export}")
+        else:
+            display_notes(load_notes())
+    except (ValueError, IndexError, OSError) as e:
+        print(f"Ошибка: {e}", file=sys.stderr)
+        return 1
+
+    return 0
+
+
 def get_user_choice(max_choice):
     """Получает от пользователя номер выбора."""
     try:
@@ -249,8 +294,13 @@ def action_export_notes():
     print(f"Экспортировано заметок: {count} -> {path}")
 
 
-def main():
-    """Главный цикл программы."""
+def main(argv=None):
+    """Запускает CLI при наличии аргументов, иначе интерактивное меню."""
+    argv = sys.argv[1:] if argv is None else argv
+
+    if argv:
+        return run_cli(build_parser().parse_args(argv))
+
     clear_console()
     init_notes_file()
 
@@ -288,4 +338,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())
