@@ -83,16 +83,31 @@ class NotesOperationsTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             main.search_notes("  ")
 
+    def test_parse_tags_returns_unique_lowercase_tags(self):
+        self.assertEqual(
+            main.parse_tags("Buy #Milk and #milk #Work-2026"),
+            ["milk", "work-2026"],
+        )
+
+    def test_filter_by_tag_matches_only_tagged_notes(self):
+        self.write_notes("buy #milk", "walk dog #pets", "milk chocolate")
+
+        self.assertEqual(main.filter_by_tag("#MILK"), ["buy #milk\n"])
+
+    def test_filter_by_tag_rejects_blank_tag(self):
+        with self.assertRaises(ValueError):
+            main.filter_by_tag(" # ")
+
     def test_export_notes_writes_json(self):
-        self.write_notes("first", "second")
+        self.write_notes("first #work", "second")
         export_path = Path(self.tmp_dir.name) / "notes.json"
 
         self.assertEqual(main.export_notes(export_path), 2)
         self.assertEqual(
             json.loads(export_path.read_text(encoding="utf-8")),
             [
-                {"id": 1, "text": "first"},
-                {"id": 2, "text": "second"},
+                {"id": 1, "text": "first #work", "tags": ["work"]},
+                {"id": 2, "text": "second", "tags": []},
             ],
         )
 
@@ -128,6 +143,15 @@ class NotesOperationsTest(unittest.TestCase):
         self.assertEqual(code, 0)
         self.assertIn("1. buy milk", output)
         self.assertNotIn("walk the dog", output)
+
+    def test_cli_tag_shows_only_tagged_notes(self):
+        self.write_notes("buy #milk", "walk dog #pets")
+
+        code, output = self.run_cli("--tag", "#PETS")
+
+        self.assertEqual(code, 0)
+        self.assertIn("walk dog #pets", output)
+        self.assertNotIn("buy #milk", output)
 
     def test_cli_delete_removes_note(self):
         self.write_notes("first", "second")

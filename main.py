@@ -7,9 +7,11 @@ Simple note manager with CRUD operations and search functionality.
 import argparse
 import json
 import os
+import re
 import sys
 
 NOTES_FILE = os.environ.get("NOTES_FILE", "notes.txt")
+TAG_PATTERN = re.compile(r"(?<!\w)#([\w-]+)", re.UNICODE)
 
 
 def clear_console():
@@ -125,10 +127,25 @@ def search_notes(keyword):
     return [note for note in load_notes() if keyword in note.lower()]
 
 
+def parse_tags(text):
+    """Возвращает уникальные теги из текста заметки в нижнем регистре."""
+    return sorted({match.lower() for match in TAG_PATTERN.findall(text)})
+
+
+def filter_by_tag(tag):
+    """Возвращает заметки, содержащие указанный тег."""
+    tag = tag.strip().lstrip("#").lower()
+
+    if not tag:
+        raise ValueError("Тег не может быть пустым!")
+
+    return [note for note in load_notes() if tag in parse_tags(note)]
+
+
 def export_notes(path):
     """Сохраняет заметки в JSON-файл и возвращает их количество."""
     notes = [
-        {"id": number, "text": note.strip()}
+        {"id": number, "text": note.strip(), "tags": parse_tags(note)}
         for number, note in enumerate(load_notes(), 1)
     ]
 
@@ -148,6 +165,7 @@ def build_parser():
     parser.add_argument("--add", metavar="ТЕКСТ", help="добавить заметку")
     parser.add_argument("--list", action="store_true", help="показать все заметки")
     parser.add_argument("--search", metavar="СЛОВО", help="найти заметки по подстроке")
+    parser.add_argument("--tag", metavar="ТЕГ", help="найти заметки по тегу")
     parser.add_argument(
         "--delete", metavar="НОМЕР", type=int, help="удалить заметку по номеру"
     )
@@ -165,6 +183,13 @@ def run_cli(args):
             print(f"Заметка '{delete_note(args.delete)}' удалена!")
         elif args.search is not None:
             found = search_notes(args.search)
+            if found:
+                print(f"\nНайдено {len(found)} заметок:")
+                display_notes(found, show_header=False)
+            else:
+                print("Заметки не найдены!")
+        elif args.tag is not None:
+            found = filter_by_tag(args.tag)
             if found:
                 print(f"\nНайдено {len(found)} заметок:")
                 display_notes(found, show_header=False)
@@ -278,6 +303,24 @@ def action_search_notes():
         print("Заметки не найдены!")
 
 
+def action_search_by_tag():
+    """Поиск заметок по тегу."""
+    print("=" * 50)
+    tag = input("Введите тег для поиска (например, #работа): ")
+
+    try:
+        found = filter_by_tag(tag)
+    except ValueError as e:
+        print(e)
+        return
+
+    if found:
+        print(f"\nНайдено {len(found)} заметок:")
+        display_notes(found, show_header=False)
+    else:
+        print("Заметки не найдены!")
+
+
 def action_export_notes():
     """Экспортирует заметки в JSON-файл."""
     print("=" * 50)
@@ -310,7 +353,8 @@ def main(argv=None):
         "3": ("Удалить заметку", action_delete_note),
         "4": ("Посмотреть заметки", show_notes),
         "5": ("Поиск заметок", action_search_notes),
-        "6": ("Экспорт заметок в JSON", action_export_notes),
+        "6": ("Поиск заметок по тегу", action_search_by_tag),
+        "7": ("Экспорт заметок в JSON", action_export_notes),
     }
 
     while True:
