@@ -6,7 +6,7 @@ Simple note manager with CRUD operations and search functionality.
 
 import os
 
-NOTES_FILE = "notes.txt"
+NOTES_FILE = os.environ.get("NOTES_FILE", "notes.txt")
 
 
 def clear_console():
@@ -52,7 +52,7 @@ def display_notes(lines, show_header=True):
     """Отображает список заметок с нумерацией."""
     if show_header:
         print("=" * 50)
-    
+
     if not lines:
         print("Заметки не найдены!")
         return
@@ -65,6 +65,61 @@ def show_notes():
     """Показывает все заметки с нумерацией."""
     lines = load_notes()
     display_notes(lines, show_header=True)
+
+
+def add_note(text):
+    """Добавляет заметку и возвращает сохранённый текст."""
+    text = text.strip()
+
+    if not text:
+        raise ValueError("Заметка не может быть пустой!")
+
+    with open(NOTES_FILE, "a", encoding="utf-8") as f:
+        f.write(text + "\n")
+
+    return text
+
+
+def update_note(index, text):
+    """Заменяет заметку по номеру и возвращает её предыдущий текст."""
+    text = text.strip()
+
+    if not text:
+        raise ValueError("Заметка не может быть пустой!")
+
+    lines = load_notes()
+
+    if not 1 <= index <= len(lines):
+        raise IndexError("Неверный номер заметки")
+
+    previous = lines[index - 1].strip()
+    lines[index - 1] = text + "\n"
+    save_notes(lines)
+
+    return previous
+
+
+def delete_note(index):
+    """Удаляет заметку по номеру и возвращает её текст."""
+    lines = load_notes()
+
+    if not 1 <= index <= len(lines):
+        raise IndexError("Неверный номер заметки")
+
+    deleted = lines.pop(index - 1).strip()
+    save_notes(lines)
+
+    return deleted
+
+
+def search_notes(keyword):
+    """Возвращает заметки, содержащие ключевое слово (без учёта регистра)."""
+    keyword = keyword.strip().lower()
+
+    if not keyword:
+        raise ValueError("Ключевое слово не может быть пустым!")
+
+    return [note for note in load_notes() if keyword in note.lower()]
 
 
 def get_user_choice(max_choice):
@@ -82,14 +137,13 @@ def get_user_choice(max_choice):
 def action_add_note():
     print("=" * 50)
     note = input("Введите заметку, которую хотите добавить: ").strip()
-    
-    if not note:
-        print("Заметка не может быть пустой!")
+
+    try:
+        add_note(note)
+    except ValueError as e:
+        print(e)
         return
-    
-    with open(NOTES_FILE, "a", encoding="utf-8") as f:
-        f.write(note + "\n")
-    
+
     print("=" * 50)
     print("Заметка добавлена!")
 
@@ -110,8 +164,12 @@ def action_update_note():
         return
 
     new_note = input("Введите новый текст заметки: ")
-    lines[choice - 1] = new_note + "\n"
-    save_notes(lines)
+
+    try:
+        update_note(choice, new_note)
+    except (ValueError, IndexError) as e:
+        print(e)
+        return
 
     print("=" * 50)
     print("Заметка обновлена!")
@@ -132,9 +190,11 @@ def action_delete_note():
     if not choice:
         return
 
-    deleted_note = lines[choice - 1].strip()
-    del lines[choice - 1]
-    save_notes(lines)
+    try:
+        deleted_note = delete_note(choice)
+    except IndexError as e:
+        print(e)
+        return
 
     print("=" * 50)
     print(f"Заметка '{deleted_note}' удалена!")
@@ -143,23 +203,14 @@ def action_delete_note():
 def action_search_notes():
     """Поиск заметок по ключевому слову."""
     print("=" * 50)
-    keyword = input("Введите ключевое слово для поиска: ").strip().lower()
-    
-    if not keyword:
-        print("Ключевое слово не может быть пустым!")
+    keyword = input("Введите ключевое слово для поиска: ")
+
+    try:
+        found = search_notes(keyword)
+    except ValueError as e:
+        print(e)
         return
-    
-    lines = load_notes()
-    
-    if not lines:
-        print("Нет заметок для поиска!")
-        return
-    
-    found = []
-    for note in lines:
-        if keyword in note.lower():
-            found.append(note)
-    
+
     if found:
         print(f"\nНайдено {len(found)} заметок:")
         display_notes(found, show_header=False)
@@ -171,7 +222,7 @@ def main():
     """Главный цикл программы."""
     clear_console()
     init_notes_file()
-    
+
     menu = {
         "1": ("Добавить заметку", action_add_note),
         "2": ("Обновить заметку", action_update_note),
@@ -179,7 +230,7 @@ def main():
         "4": ("Посмотреть заметки", show_notes),
         "5": ("Поиск заметок", action_search_notes),
     }
-    
+
     while True:
         print("=" * 50)
         print("МЕНЕДЖЕР ЗАМЕТОК".center(50))
@@ -188,19 +239,19 @@ def main():
             print(f"{key}. {name}")
         print("0. Выйти")
         print("=" * 50)
-        
+
         choice = input("Выберите вариант: ").strip()
-        
+
         if choice == "0":
             print("До свидания!")
             break
-        
+
         if choice in menu:
             _, action = menu[choice]
             action()
         else:
             print("Неверный выбор!")
-        
+
         wait_for_enter()
 
 
