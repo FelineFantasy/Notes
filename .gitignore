@@ -29,3 +29,7 @@ ENV/
 *.tmp
 .DS_Store
 Thumbs.db
+
+# Application data
+notes.txt
+notes.json
