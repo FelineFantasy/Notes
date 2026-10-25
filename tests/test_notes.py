@@ -1,3 +1,4 @@
+import json
 import sys
 import tempfile
 import unittest
@@ -80,6 +81,27 @@ class NotesOperationsTest(unittest.TestCase):
     def test_search_notes_rejects_blank_keyword(self):
         with self.assertRaises(ValueError):
             main.search_notes("  ")
+
+    def test_export_notes_writes_json(self):
+        self.write_notes("first", "second")
+        export_path = Path(self.tmp_dir.name) / "notes.json"
+
+        self.assertEqual(main.export_notes(export_path), 2)
+        self.assertEqual(
+            json.loads(export_path.read_text(encoding="utf-8")),
+            [
+                {"id": 1, "text": "first"},
+                {"id": 2, "text": "second"},
+            ],
+        )
+
+    def test_export_notes_writes_empty_list(self):
+        export_path = Path(self.tmp_dir.name) / "notes.json"
+
+        self.assertEqual(main.export_notes(export_path), 0)
+        self.assertEqual(
+            json.loads(export_path.read_text(encoding="utf-8")), []
+        )
 
 
 if __name__ == "__main__":

@@ -4,6 +4,7 @@
 Simple note manager with CRUD operations and search functionality.
 """
 
+import json
 import os
 
 NOTES_FILE = os.environ.get("NOTES_FILE", "notes.txt")
@@ -122,6 +123,20 @@ def search_notes(keyword):
     return [note for note in load_notes() if keyword in note.lower()]
 
 
+def export_notes(path):
+    """Сохраняет заметки в JSON-файл и возвращает их количество."""
+    notes = [
+        {"id": number, "text": note.strip()}
+        for number, note in enumerate(load_notes(), 1)
+    ]
+
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(notes, f, ensure_ascii=False, indent=2)
+        f.write("\n")
+
+    return len(notes)
+
+
 def get_user_choice(max_choice):
     """Получает от пользователя номер выбора."""
     try:
@@ -218,6 +233,22 @@ def action_search_notes():
         print("Заметки не найдены!")
 
 
+def action_export_notes():
+    """Экспортирует заметки в JSON-файл."""
+    print("=" * 50)
+    path = input("Введите имя JSON-файла (по умолчанию notes.json): ").strip()
+    path = path or "notes.json"
+
+    try:
+        count = export_notes(path)
+    except OSError as e:
+        print(f"Ошибка экспорта: {e}")
+        return
+
+    print("=" * 50)
+    print(f"Экспортировано заметок: {count} -> {path}")
+
+
 def main():
     """Главный цикл программы."""
     clear_console()
@@ -229,6 +260,7 @@ def main():
         "3": ("Удалить заметку", action_delete_note),
         "4": ("Посмотреть заметки", show_notes),
         "5": ("Поиск заметок", action_search_notes),
+        "6": ("Экспорт заметок в JSON", action_export_notes),
     }
 
     while True:
